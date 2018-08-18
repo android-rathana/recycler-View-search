@@ -23,8 +23,6 @@ import java.util.List;
 public class FilmAdapter extends RecyclerView.Adapter<FilmAdapter.ViewHolder>{
 
     List<Film> films;
-    List<Film> subListOfFilms =new ArrayList<>();
-    List<Film> oldFilms =new ArrayList<>();
     Context context;
     ItemClickCallback callback;
     public FilmAdapter(Context context,List<Film> films) {
@@ -35,10 +33,20 @@ public class FilmAdapter extends RecyclerView.Adapter<FilmAdapter.ViewHolder>{
 
     public void setFilms(List<Film> films) {
         this.films.addAll(films);
-        setOldFilms(films);
+        notifyDataSetChanged();
+        Log.e(TAG, "setFilms: films Size "+this.films.size()  + " new Films Size "+films.size());
+    }
+
+    public void replaceFilms(List<Film> films){
+        this.films.clear();
+        this.films.addAll(films);
         notifyDataSetChanged();
     }
 
+    public void clearFilms(){
+        this.films.clear();
+        notifyDataSetChanged();
+    }
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -121,20 +129,5 @@ public class FilmAdapter extends RecyclerView.Adapter<FilmAdapter.ViewHolder>{
     }
 
     private static final String TAG = "FilmAdapter";
-    public void searchItem(String text){
-        /*for(Film film : films){
-            if(film.getTitle().contains(text)){
-                Log.e(TAG, "searchItem: Found");
-                subListOfFilms.add(film);
-            }
-        }*/
-
-        this.films.clear();
-        this.films.addAll(subListOfFilms);
-        notifyDataSetChanged();
-    }
-     public void setOldFilms(List<Film> films){
-        this.oldFilms.addAll(films);
-     }
 
 }

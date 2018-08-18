@@ -53,10 +53,11 @@ public class MainActivity extends AppCompatActivity implements ItemClickCallback
     }
 
     private void updateData() {
+        List<Film> films=new ArrayList<>();
         for(int i=0;i<50;i++){
-            this.films.add(new Film("star war 2 "+i,"100K",R.drawable.kangaroo,"HRD"));
+            films.add(new Film("The Meg "+i,"100K",R.drawable.kangaroo,"HRD"));
         }
-        filmAdapter.setFilms(this.films);
+        filmAdapter.setFilms(films);
     }
 
     /*
@@ -72,15 +73,14 @@ public class MainActivity extends AppCompatActivity implements ItemClickCallback
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-
-                return false;
+                return true;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                //Log.e(TAG, "onQueryTextChange: "+newText );
+                Log.e(TAG, "onQueryTextChange: "+newText );
                 new Handler().postDelayed(()->{
-                    filmAdapter.searchItem(newText);
+                    searchFilm(newText);
                     },1000);
 
                 return true;
@@ -135,6 +135,19 @@ public class MainActivity extends AppCompatActivity implements ItemClickCallback
     }
 
     public void searchFilm(String text){
+        if(text.isEmpty()){
+            filmAdapter.clearFilms();
+            updateData();
+            return;
+        }
 
+        List<Film> subFilms=new ArrayList<>();
+        for(int i = 0 ;i<this.films.size(); i++){
+            if(films.get(i).getTitle().matches("(?i)("+text+").*")){
+                subFilms.add(films.get(i));
+            }
+        }
+
+        filmAdapter.replaceFilms(subFilms);
     }
 }
