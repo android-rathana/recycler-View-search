@@ -1,12 +1,51 @@
 package com.example.rathana.recyclerviewdemo.model;
 
-public class Film {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Film implements Parcelable{
     private int id;
     private  String title;
     private String description;
     private String view;
     private int thumb;
     private String channel;
+
+    protected Film(Parcel in) {
+        id = in.readInt();
+        title = in.readString();
+        description = in.readString();
+        view = in.readString();
+        thumb = in.readInt();
+        channel = in.readString();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
+        dest.writeString(title);
+        dest.writeString(description);
+        dest.writeString(view);
+        dest.writeInt(thumb);
+        dest.writeString(channel);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<Film> CREATOR = new Creator<Film>() {
+        @Override
+        public Film createFromParcel(Parcel in) {
+            return new Film(in);
+        }
+
+        @Override
+        public Film[] newArray(int size) {
+            return new Film[size];
+        }
+    };
 
     public int getThumb() {
         return thumb;
